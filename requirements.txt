@@ -1,0 +1,9 @@
+fastapi
+uvcorn
+sqlalchemy>=2.0
+asyncpg
+pydantic-settings
+alembic
+pycopg2-binary
+httpx
+pytest

@@ -1,0 +1,31 @@
+from typing import Optional, List
+from sqlalchemy import select, update
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.payments import Payment, PaymentStatus
+
+class PaymentRepository:
+    async def create(self, db: AsyncSession, payment: Payment) -> Payment:
+        db.add(payment)
+        await db.flush()
+        return payment
+    
+    async def get_by_id(self, db: AsyncSession, payment_id: int) -> Optional[Payment]:
+        result = await db.execute(
+            select(Payment).where(Payment.id == payment_id)   
+        )
+        return result.scalars().first()
+    
+    async def get_by_external_id(self, db: AsyncSession, external_id: str) -> Optional[Payment]:
+        result = await db.execute(
+            select(Payment).where(Payment.external_id == external_id)
+        )
+
+        return result.scalars().first()
+    
+    async def update_status(self, db: AsyncSession, status: PaymentStatus, error_message: Optional[str] = None):
+        smtm = (
+            update(Payment)
+            .where()
+        )
+    
