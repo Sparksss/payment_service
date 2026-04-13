@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import Column, Integer, Numeric, String, ForegnKey, Enum
+from sqlalchemy import Column, Integer, Numeric, String, ForeignKey, Enum
 from app.db.base import Base
 
 class PaymentType(str, enum.Enum):
@@ -16,7 +16,7 @@ class Payment(Base):
     __tablename__ = "payments"
 
     id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForegnKey("orders.id"), nullable=False)
+    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
     payment_type = Column(Enum(PaymentType), nullable=False)
     amount = Column(Numeric(10, 2), nullable=False)
     status = Column(Enum(PaymentStatus), nullable=False, default=PaymentStatus.PENDING)
