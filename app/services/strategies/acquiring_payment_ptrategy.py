@@ -15,6 +15,7 @@ class AcquiringPaymentStrategy(PaymentStrategy):
             payment_type=PaymentStrategy.ACQUIRING,
             transaction_id=transaction_id
         )
+
         self.db.add(payment)
         return payment
     

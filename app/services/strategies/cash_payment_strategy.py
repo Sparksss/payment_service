@@ -8,7 +8,7 @@ class CashPaymentStrategy(PaymentStrategy):
 
     async def deposit(self, order, amount):
         payment = Payment(
-                order_id=order.id
+                order_id=order.id,
                 amount=amount,
                 payment_type=PaymentStrategy.CASH
         )
