@@ -7,3 +7,4 @@ alembic
 pycopg2-binary
 httpx
 pytest
+pydantic
