@@ -13,15 +13,15 @@ from app.models.payments import PaymentType
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
-async def get_payment_service(db: AsyncSession = Depends(get_db)) -> PaymentService:
+async def get_payment_service() -> PaymentService:
     bank_client = BankAPIClient() 
 
     payment_repo = PaymentRepository()
     order_repo = OrderRepository()
 
     strategies = {
-        PaymentType.CASH: CashPaymentStrategy(payment_repo),
-        PaymentType.ACQUIRING: AcquiringPaymentStrategy(payment_repo, bank_client)
+        PaymentType.CASH: CashPaymentStrategy(),
+        PaymentType.ACQUIRING: AcquiringPaymentStrategy(bank_client)
     }
 
     return PaymentService(order_repo, payment_repo, strategies)

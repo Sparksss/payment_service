@@ -16,11 +16,12 @@ class PaymentStatus(str, Enum):
 class PaymentCreate(BaseModel):
     order_id: int
     amount: Decimal = Field(..., gt=0, max_digits=10, decimal_places=2)
+    payment_type: PaymentType = Field(..., description="Cash or Acquiring")
 
     @field_validator("amount")
     @classmethod
     def validate_amount_precision(cls, v: Decimal) -> Decimal:
-        if v.as_tuple().exponent <- 2:
+        if v.as_tuple().exponent < -2:
             raise ValueError("Сумма не может иметь более 2 знаков после запятой")
         return v
 
