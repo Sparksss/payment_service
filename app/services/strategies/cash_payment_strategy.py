@@ -1,5 +1,6 @@
 from app.services.strategies.base import PaymentStrategy
-from app.models.payments import Payment, PaymentStatus
+from app.models.payments import Payment, PaymentStatus, PaymentType
+
 
 class CashPaymentStrategy(PaymentStrategy):
     def __init__(self, db_session):
@@ -10,7 +11,8 @@ class CashPaymentStrategy(PaymentStrategy):
         payment = Payment(
                 order_id=order.id,
                 amount=amount,
-                payment_type=PaymentStrategy.CASH
+                payment_type=PaymentType.CASH,
+                external_id=None
         )
         self.db.add(payment)
         return payment
