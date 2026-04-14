@@ -5,7 +5,7 @@ from app.api.schemas.order import OrderStatus
 from app.api.schemas.payment import PaymentCreate
 from app.models.order import Order
 from app.services.strategies.cash_payment_strategy import CashPaymentStrategy
-from app.services.strategies.acquiring_payment_ptrategy import AcquiringPaymentStrategy
+from app.services.strategies.acquiring_payment_strategy import AcquiringPaymentStrategy
 from app.models.payments import PaymentType, Payment, PaymentStatus
 from app.repositories.order_repo import OrderRepository
 from app.repositories.payment_repo import PaymentRepository
