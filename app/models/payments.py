@@ -1,5 +1,11 @@
 import enum
-from sqlalchemy import Column, Integer, Numeric, String, ForeignKey, Enum
+
+from decimal import Decimal
+from typing import Optional
+
+from sqlalchemy import Numeric, String, Enum, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.db.base import Base
 
 class PaymentType(str, enum.Enum):
@@ -15,11 +21,22 @@ class PaymentStatus(str, enum.Enum):
 class Payment(Base):
     __tablename__ = "payments"
 
-    id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
-    payment_type = Column(Enum(PaymentType), nullable=False)
-    amount = Column(Numeric(10, 2), nullable=False)
-    status = Column(Enum(PaymentStatus), nullable=False, default=PaymentStatus.PENDING)
-    external_id = Column(String, nullable=True, index=True)
-    error_code = Column(String, nullable=True)
-    error_massage = Column(String, nullable=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    order_id: Mapped[int] = mapped_column(ForeignKey("order.id"), nullable=False)
+
+    amount: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+
+    payment_type: Mapped[PaymentType] = mapped_column(Enum(PaymentType), nullable=False, index=True)
+
+    status: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, unique=True, index=True)
+
+    external_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, unique=True, index=True)
+
+    error_code: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    error_message: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+
+    order: Mapped["Order"] = relationship("Order", back_populates="payments")
+
+    def __repr__(self) -> str:
+        return f"<Payment(id={self.id}, type={self.payment_type}, status={self.status})>"
+
