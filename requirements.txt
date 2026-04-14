@@ -1,10 +1,10 @@
 fastapi
-uvcorn
+uvicorn
 sqlalchemy>=2.0
 asyncpg
 pydantic-settings
 alembic
-pycopg2-binary
+psycopg2-binary
 httpx
 pytest
 pydantic
