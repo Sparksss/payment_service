@@ -16,7 +16,7 @@ class BankAPIClient:
                     url,
                     json=payload,
                     headers=self.headers,
-                    timeout=settings.BANK_API_TIMEOUT
+                    timeout=settings.BANK_TIMEOUT
                 )
                 response.raise_for_status()
                 return response.json()
