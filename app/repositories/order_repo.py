@@ -1,11 +1,10 @@
 from typing import Optional
 from decimal import Decimal
-from slqalchemy import select, func
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from app.models.order import Order
-from app.models.payment import Payment, PaymentStatus
+from app.models.payments import Payment, PaymentStatus
 
 class OrderRepository:
     async def get_by_id(self, db: AsyncSession, order_id: int) -> Optional[Order]:
@@ -20,10 +19,9 @@ class OrderRepository:
             .where(Order.id == order_id)
             .with_for_update()
         )
-
         return result.scalars().first()
 
-    async def get_totalpaid_amount(self, db: AsyncSession, order_id: int) -> Decimal:
+    async def get_total_paid_amount(self, db: AsyncSession, order_id: int) -> Decimal:
         query = (
             select(func.coalesce(func.sum(Payment.amount), 0))
             .where(Payment.order_id == order_id,
@@ -38,7 +36,4 @@ class OrderRepository:
             .offset(skip)
             .limit(limit)
         )
-        
         return result.scalars().all()
-
-        
