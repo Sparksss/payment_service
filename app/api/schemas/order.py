@@ -17,7 +17,7 @@ class OrderBase(BaseModel):
         description="Сумма заказа (должна быть больше 0)"
     )
 
-class OrderCreate(BaseModel):
+class OrderCreate(OrderBase):
     pass
 
 class PaymentShortInfo(BaseModel):
