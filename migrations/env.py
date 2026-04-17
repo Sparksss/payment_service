@@ -1,13 +1,19 @@
 import asyncio
+import sys
+import os
 from logging.config import fileConfig
+
+sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
+from alembic import context
 
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from alembic import context
-
 from app.core.config import settings
 from app.db.base import Base
+
+from app.models.order import Order
+from app.models.payments import Payment
 
 config = context.config
 

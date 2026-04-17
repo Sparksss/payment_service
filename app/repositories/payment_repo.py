@@ -20,12 +20,12 @@ class PaymentRepository:
         result = await db.execute(
             select(Payment).where(Payment.external_id == external_id)
         )
-
         return result.scalars().first()
     
-    async def update_status(self, db: AsyncSession, status: PaymentStatus, error_message: Optional[str] = None):
-        smtm = (
+    async def update_status(self, db: AsyncSession, payment_id: int, status: PaymentStatus, error_message: Optional[str] = None):
+        stmt = (
             update(Payment)
-            .where()
+            .where(Payment.id == payment_id)
+            .values(status=status, error_message=error_message)
         )
-    
+        await db.execute(stmt)
