@@ -2,6 +2,14 @@ import uuid
 import httpx
 from app.core.config import settings
 
+
+class BankAPIError(Exception):
+    """Базовое исключение для ошибок банковского API"""
+    def __init__(self, message: str, status_code: int = None):
+        self.message = message
+        self.status_code = status_code
+        super().__init__(self.message)
+
 class BankAPIClient:
     def __init__(self):
         self.base_url = settings.BANK_API_URL

@@ -2,10 +2,7 @@ from decimal import Decimal
 from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 from enum import Enum
-
-class PaymentType(str, Enum):
-    CASH = "cash"
-    ACQUIRING = "acquiring"
+from app.models.payments import PaymentType
 
 class PaymentStatus(str, Enum):
     PENDING = "pending"

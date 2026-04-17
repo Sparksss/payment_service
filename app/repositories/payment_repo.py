@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 from typing import Optional, List
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,3 +30,15 @@ class PaymentRepository:
             .values(status=status, error_message=error_message)
         )
         await db.execute(stmt)
+
+    async def get_stale_payments(self, db: AsyncSession, minutes: int = 15) -> List[Payment]:
+        threshold = datetime.now(timezone.utc) - timedelta(minutes=minutes)
+        
+        stmt = (
+            select(Payment)
+            .where(Payment.status == PaymentStatus.PENDING)
+            .where(Payment.created_at <= threshold)
+        )
+        
+        result = await db.execute(stmt)
+        return list(result.scalars().all())
